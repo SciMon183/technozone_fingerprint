@@ -242,46 +242,6 @@ void handleStatus() {
   server.send(200, "text/plain", status);
 }
 
-// Funkcja do rejestrowania odcisku palca
-int enrollFingerprint() {
-  int p = -1;
-  Serial.println("Place your finger on the sensor.");
-  
-  while (p == -1) {
-    int id = finger.getImage();
-    if (id == FINGERPRINT_OK) {
-      Serial.println("Image taken.");
-      id = finger.image2Tz();
-      if (id == FINGERPRINT_OK) {
-        Serial.println("Image converted.");
-        id = finger.createModel();
-        if (id == FINGERPRINT_OK) {
-          Serial.println("Model created.");
-          uint16_t fingerprintID = 1;  // Przykładowe ID, dostosuj jak potrzebujesz
-          id = finger.storeModel(fingerprintID);
-          if (id == FINGERPRINT_OK) {
-            Serial.println("Model stored.");
-            return fingerprintID;
-          } else {
-            Serial.println("Failed to store model.");
-            return -1;
-          }
-        } else {
-          Serial.println("Failed to create model.");
-          return -1;
-        }
-      } else {
-        Serial.println("Failed to convert image.");
-        return -1;
-      }
-    } else {
-      Serial.println("Failed to take image.");
-      return -1;
-    }
-  }
-  return -1;  // Zwraca -1, jeśli operacja nie zakończyła się sukcesem
-}
-
 // Funkcja obsługująca żądanie logów
 void handleLogs() {
   if (!isLoggedIn) {
@@ -327,6 +287,46 @@ void handleUnlock() {
     Serial.println("Failed to unlock fingerprint.");
     server.send(401, "text/plain", "Failed to unlock fingerprint.");
   }
+}
+
+// Funkcja do rejestrowania odcisku palca
+int enrollFingerprint() {
+  int p = -1;
+  Serial.println("Place your finger on the sensor.");
+  
+  while (p == -1) {
+    int id = finger.getImage();
+    if (id == FINGERPRINT_OK) {
+      Serial.println("Image taken.");
+      id = finger.image2Tz();
+      if (id == FINGERPRINT_OK) {
+        Serial.println("Image converted.");
+        id = finger.createModel();
+        if (id == FINGERPRINT_OK) {
+          Serial.println("Model created.");
+          uint16_t fingerprintID = 1;  // Przykładowe ID, dostosuj jak potrzebujesz
+          id = finger.storeModel(fingerprintID);
+          if (id == FINGERPRINT_OK) {
+            Serial.println("Model stored.");
+            return fingerprintID;
+          } else {
+            Serial.println("Failed to store model.");
+            return -1;
+          }
+        } else {
+          Serial.println("Failed to create model.");
+          return -1;
+        }
+      } else {
+        Serial.println("Failed to convert image.");
+        return -1;
+      }
+    } else {
+      Serial.println("Failed to take image.");
+      return -1;
+    }
+  }
+  return -1;  // Zwraca -1, jeśli operacja nie zakończyła się sukcesem
 }
 
 // Funkcja do odblokowywania odcisku palca
