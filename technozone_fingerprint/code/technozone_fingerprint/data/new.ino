@@ -1,8 +1,8 @@
 #include <WiFi.h>
 #include <ESPmDNS.h>
 #include <WebServer.h>
-#include <Adafruit_Fingerprint.h>
-#include <HardwareSerial.h>
+// #include <Adafruit_Fingerprint.h> // Tymczasowo wykomentowane
+// #include <HardwareSerial.h>       // Tymczasowo wykomentowane
 #include "configwifi.h"
 #include "configlogin.h"
 
@@ -13,8 +13,8 @@ WebServer server(80);
 const int relayPin = 5;
 
 // Inicjalizacja czujnika linii papilarnych
-HardwareSerial mySerial(1);
-Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
+// HardwareSerial mySerial(1);
+// Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
 // Tablica dla nazw użytkowników
 String userNames[100];  // Tablica na 100 odcisków palców
@@ -53,8 +53,6 @@ void setup() {
   server.on("/remove", HTTP_POST, handleRemove);
   server.on("/block", HTTP_POST, handleBlock);
   server.on("/status", HTTP_GET, handleStatus);
-  server.on("/logs", HTTP_GET, handleLogs);
-  server.on("/unlock", HTTP_POST, handleUnlock);
 
   MDNS.addService("http", "tcp", 80);
   server.begin();
@@ -64,6 +62,7 @@ void setup() {
   // mySerial.begin(57600, SERIAL_8N1, 16, 17);  // RX, TX pin (dostosuj w zależności od połączenia)
   // finger.begin(57600);
 
+  // Tymczasowo sprawdzenie, czy czujnik jest prawidłowo skonfigurowany
   // if (finger.verifyPassword()) {
   //   Serial.println("Found fingerprint sensor!");
   // } else {
@@ -98,12 +97,6 @@ void handleRoot() {
     </form>
     <form action="/status" method="get">
       <input type="submit" value="View Status">
-    </form>
-    <form action="/logs" method="get">
-      <input type="submit" value="View Logs">
-    </form>
-    <form action="/unlock" method="post">
-      <input type="submit" value="Unlock Fingerprint">
     </form>
     </body>
     </html>
@@ -166,13 +159,14 @@ void handleAdd() {
   )rawliteral";
   server.send(200, "text/html", html);
 
-  int id = enrollFingerprint();
-  if (id >= 0) {
-    userNames[id] = "User" + String(id);  // Przypisz nazwę użytkownika, np. "User1"
-    Serial.println("Fingerprint added with ID: " + String(id));
-  } else {
-    Serial.println("Failed to add fingerprint.");
-  }
+  // Tymczasowo komentujemy wywołanie funkcji enrollFingerprint
+  // int id = enrollFingerprint();
+  // if (id >= 0) {
+  //   userNames[id] = "User" + String(id);  // Przypisz nazwę użytkownika, np. "User1"
+  //   Serial.println("Fingerprint added with ID: " + String(id));
+  // } else {
+  //   Serial.println("Failed to add fingerprint.");
+  // }
 }
 
 // Funkcja usuwania odcisku palca
@@ -240,123 +234,6 @@ void handleStatus() {
     }
   }
   server.send(200, "text/plain", status);
-}
-
-// Funkcja do rejestrowania odcisku palca
-int enrollFingerprint() {
-  int p = -1;
-  Serial.println("Place your finger on the sensor.");
-  
-  while (p == -1) {
-    int id = finger.getImage();
-    if (id == FINGERPRINT_OK) {
-      Serial.println("Image taken.");
-      id = finger.image2Tz();
-      if (id == FINGERPRINT_OK) {
-        Serial.println("Image converted.");
-        id = finger.createModel();
-        if (id == FINGERPRINT_OK) {
-          Serial.println("Model created.");
-          uint16_t fingerprintID = 1;  // Przykładowe ID, dostosuj jak potrzebujesz
-          id = finger.storeModel(fingerprintID);
-          if (id == FINGERPRINT_OK) {
-            Serial.println("Model stored.");
-            return fingerprintID;
-          } else {
-            Serial.println("Failed to store model.");
-            return -1;
-          }
-        } else {
-          Serial.println("Failed to create model.");
-          return -1;
-        }
-      } else {
-        Serial.println("Failed to convert image.");
-        return -1;
-      }
-    } else {
-      Serial.println("Failed to take image.");
-      return -1;
-    }
-  }
-  return -1;  // Zwraca -1, jeśli operacja nie zakończyła się sukcesem
-}
-
-// Funkcja obsługująca żądanie logów
-void handleLogs() {
-  if (!isLoggedIn) {
-    server.sendHeader("Location", "/login");
-    server.send(302, "text/plain", "");
-    return;
-  }
-
-  String logData = "Here are the log messages:\n";
-  logData += "Last action: Fingerprint added\n"; // Przykładowe logi
-  // Możesz tutaj dodać więcej danych logujących
-
-  server.send(200, "text/plain", logData);
-}
-
-// Funkcja obsługująca odblokowywanie odcisku palca
-void handleUnlock() {
-  if (!isLoggedIn) {
-    server.sendHeader("Location", "/login");
-    server.send(302, "text/plain", "");
-    return;
-  }
-
-  String html = R"rawliteral(
-    <!DOCTYPE html>
-    <html>
-    <body>
-    <h2>Unlock Fingerprint</h2>
-    <form action="/unlock" method="post">
-      <input type="submit" value="Start Unlocking">
-    </form>
-    </body>
-    </html>
-  )rawliteral";
-  server.send(200, "text/html", html);
-
-  // Odblokowywanie odcisku palca
-  int result = unlockFingerprint();
-  if (result >= 0) {
-    Serial.println("Fingerprint unlocked successfully.");
-    server.send(200, "text/plain", "Fingerprint unlocked successfully.");
-  } else {
-    Serial.println("Failed to unlock fingerprint.");
-    server.send(401, "text/plain", "Failed to unlock fingerprint.");
-  }
-}
-
-// Funkcja do odblokowywania odcisku palca
-int unlockFingerprint() {
-  Serial.println("Place your finger on the sensor to unlock.");
-  
-  int id = -1;
-  while (id == -1) {
-    int result = finger.getImage();
-    if (result == FINGERPRINT_OK) {
-      Serial.println("Image taken.");
-      result = finger.image2Tz();
-      if (result == FINGERPRINT_OK) {
-        Serial.println("Image converted.");
-        result = finger.fingerSearch();
-        if (result == FINGERPRINT_OK) {
-          id = finger.fingerID; // ID odcisku palca
-          Serial.println("Fingerprint matched with ID: " + String(id));
-          return id; // Odcisk odblokowany, zwróć ID
-        } else {
-          Serial.println("Fingerprint not found.");
-        }
-      } else {
-        Serial.println("Failed to convert image.");
-      }
-    } else {
-      Serial.println("Failed to take image.");
-    }
-  }
-  return -1; // Zwraca -1, jeśli operacja nie zakończyła się sukcesem
 }
 
 void loop() {
