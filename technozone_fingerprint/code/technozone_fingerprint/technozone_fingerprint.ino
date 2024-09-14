@@ -3,6 +3,8 @@
 #include <WebServer.h>
 #include <Adafruit_Fingerprint.h>
 #include <HardwareSerial.h>
+//#include <softwareSerial.h> // add new version 
+
 #include "configwifi.h"
 #include "configlogin.h"
 
@@ -10,7 +12,7 @@
 WebServer server(80);
 
 // Pin dla przekaźnika
-const int relayPin = 5;
+const int relayPin = 10;  //D34 
 
 // Inicjalizacja czujnika linii papilarnych
 HardwareSerial mySerial(1);
@@ -23,7 +25,7 @@ String userNames[100];  // Tablica na 100 odcisków palców
 bool isLoggedIn = false;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(57600);
 
   // Ustawienie pinu przekaźnika jako wyjście
   pinMode(relayPin, OUTPUT);
@@ -61,9 +63,9 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
 
-  // Inicjalizacja czujnika linii papilarnych
-  // mySerial.begin(57600, SERIAL_8N1, 16, 17);  // RX, TX pin (dostosuj w zależności od połączenia)
-  // finger.begin(57600);
+  //Inicjalizacja czujnika linii papilarnych
+  mySerial.begin(57600, SERIAL_8N1, 40, 41);  // RX, TX pin (dostosuj w zależności od połączenia).    blue == txd0
+  finger.begin(57600);
 
   // if (finger.verifyPassword()) {
   //   Serial.println("Found fingerprint sensor!");
