@@ -11,7 +11,7 @@
 
 
 ## General info
-Popular solution based on Arduino r3 providing fingerprint foor lock. For beginers is very good becous arduino ide just work with uno r3 without any special instalation etc.  
+Popular solution based on Arduino r3 providing fingerprint foor lock. For beginers is very good becous Arduino IDE just work with uno r3 without any special instalation etc.  
 
 
 ## Features
@@ -21,6 +21,20 @@ Popular solution based on Arduino r3 providing fingerprint foor lock. For begine
 
 
 ## Pictures <!-- do a good looking pictures if i actualy done -->
-<span style="color: gray"> TODO </span>
+> _TODO_
 
-[general-info]: https://github.com/SciMon183/technozone_fingerprint#general-info
+## Setup 
+#### You will need: 
+* Arduino IDE with working Arduino r3 board.
+* Fingerprint sensor connectes through logic level converter. Fingerprint `rx` and `tx` connected to pin `3` and `2`
+* Relay switch with connected electromagnetic lock to the `7` pin 
+* Sttus diode connected to `3,3V` pin and `GND`
+
+#### Schematic
+> _TODO_
+
+
+## Credits
+Big thanks for: 
+
+* [Adafruit fingerprint library](https://github.com/adafruit/Adafruit-Fingerprint-Sensor-Library)
