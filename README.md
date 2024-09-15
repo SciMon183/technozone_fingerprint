@@ -4,10 +4,10 @@ This project wac created by person who need to providing acces to school's scien
 
 ## Table of contents 
 *[Gneral info](#general-info) <br>
-*[Features](#features)
-*[Pictures](#pictures)
-*[Setup](#setup)  <!-- to do in feature is do a good setup section -->
-*[Credits](#credits)
+*[Features](#features) <br>
+*[Pictures](#pictures) <br>
+*[Setup](#setup) <br>  <!-- to do in feature is do a good setup section -->
+*[Credits](#credits) 
 
 ## General info
 
