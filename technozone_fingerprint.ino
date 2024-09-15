@@ -39,7 +39,7 @@ void loop() {
 
     // Otwórz zamek
     digitalWrite(unlockPin, HIGH);  // Zamek otwarty
-    delay(5000);  // Otwórz na 8 sekund
+    delay(5000);  // Otwórz na 5 sekund
     digitalWrite(unlockPin, LOW);   // Zamek zamknięty
   }
 
