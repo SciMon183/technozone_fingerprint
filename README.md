@@ -16,4 +16,9 @@ jdhsfkjsdhkfjhskdjhfkshdjfjkhalfkjjkalchafniekfdhkfhjkj
 
 
 
+
+
+
+
  
+[general-info]: https://github.com/SciMon183/technozone_fingerprint#general-info
