@@ -28,7 +28,16 @@ Popular solution based on Arduino r3 providing fingerprint foor lock. For begine
 * Arduino IDE with working Arduino r3 board.
 * Fingerprint sensor connectes through logic level converter. Fingerprint `rx` and `tx` connected to pin `3` and `2`
 * Relay switch with connected electromagnetic lock to the `7` pin 
-* Sttus diode connected to `3,3V` pin and `GND`
+* Sttus diode connected to `3,3V` and `GND`
+
+#### Use 
+If you plug your board to the computer and upload the code all should start working. First you need to add some fingerprint. To do this you need to open `Serial Monitor` in Arduino IDE and chage the comunication speed to `9600`. <br>
+
+1. If you need to add a fingerprint write in Serial Monitor `add` and do everything like program tell you. 
+2. If you need to remove a finger print write in Serial Monitor `remove ID`.
+3. If you need to see who has got a fingerprint or ID write in Serial Monitor `print`
+
+All information you need to add some fingerprint has got a program so just listen what they talk to you in serial monitor
 
 #### Schematic
 > _TODO_
@@ -38,3 +47,4 @@ Popular solution based on Arduino r3 providing fingerprint foor lock. For begine
 Big thanks for: 
 
 * [Adafruit fingerprint library](https://github.com/adafruit/Adafruit-Fingerprint-Sensor-Library)
+* [Arduino SoftwareSerial library](https://docs.arduino.cc/learn/built-in-libraries/software-serial/)
