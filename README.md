@@ -22,7 +22,7 @@ Popular solution based on Arduino r3 providing fingerprint foor lock. For begine
 
 ## Pictures <!-- do a good looking pictures if i actualy done -->
 > Every photo you need to do the same project is in the photo directory. Hear you can find some basic photo like a firts prototype some photo of stuf i use and a final project. 
-> _TODO_
+
 
 ## Setup 
 #### You will need: 
