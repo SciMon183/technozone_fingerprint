@@ -21,6 +21,7 @@ Popular solution based on Arduino r3 providing fingerprint foor lock. For begine
 
 
 ## Pictures <!-- do a good looking pictures if i actualy done -->
+![First photo - this is a first prototype](./photo/first_proto.png)
 > _TODO_
 
 ## Setup 
